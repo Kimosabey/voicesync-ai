@@ -55,3 +55,7 @@ ai-engine/dist/
 *.tmp
 *.old
 *.orig
+
+
+# Keep this!
+requirements.txt
