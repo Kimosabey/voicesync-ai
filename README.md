@@ -4,50 +4,83 @@
 > **A Secure, Offline Audio Transcription Platform.**
 > *Built with React, Python (FastAPI), MinIO, and OpenAI Whisper.*
 
+![VoiceSync UI](https://via.placeholder.com/1200x600?text=VoiceSync+AI+Interface)
+*(Replace with a screenshot of your React App)*
+
 ## 🏗️ Architecture
 
 Unlike typical AI apps that send data to the cloud, **VoiceSync runs entirely locally**.
 
-`[React UI] ⚡(Direct Upload) → [MinIO Storage] ⚡(Event) → [Python AI Worker] → [Client]`
-
-1.  **Frontend (React + Vite):** Requests a pre-signed URL from the backend.
-2.  **Direct Upload:** The browser uploads the audio directly to **MinIO** (S3), bypassing the API server for speed.
-3.  **AI Engine (Python):** Downloads the file, processes it using **Faster-Whisper** (optimized for CPU), and returns text.
+```mermaid
+graph LR
+    User(User) -->|Drag & Drop| React[React Frontend]
+    React -->|1. Request URL| Py[Python API]
+    Py -->|2. Generate Pre-signed URL| MinIO[MinIO Storage]
+    React -->|3. Direct Upload| MinIO
+    React -->|4. Trigger AI| Py
+    Py -->|5. Download Audio| MinIO
+    Py -->|6. Run Whisper AI| Model[AI Model]
+    Py -->|7. Return Text| React
+```
 
 ## 🛠️ Tech Stack
 
-*   **Frontend:** React, TypeScript, Tailwind CSS, Axios.
+*   **Frontend:** React (Vite), TypeScript, Tailwind CSS, Axios.
 *   **Backend:** Python 3.11, FastAPI, Uvicorn.
-*   **AI Model:** Faster-Whisper (OpenAI's model optimized for local inference).
+*   **AI Engine:** Faster-Whisper (OpenAI's model optimized for CPU).
 *   **Storage:** MinIO (Docker) - S3 Compatible Object Storage.
+*   **Tools:** FFmpeg (Audio Processing).
 
-## 🚀 How to Run
+## 🚀 Installation & Setup
 
-### 1. Start Infrastructure (MinIO)
+### 1. Prerequisites
+*   Docker Desktop (Running)
+*   Node.js v18+
+*   Python 3.10+
+*   **FFmpeg** (Required for Audio):
+    *   *Windows:* `winget install Gyan.FFmpeg`
+
+### 2. Start Infrastructure (The Storage)
 ```bash
 docker-compose up -d
 # Runs MinIO on Port 9090 (API) and 9001 (Console)
 ```
 
-### 2. Start Backend (AI Engine)
+### 3. Start Backend (The Brain)
 ```bash
 cd ai-engine
-.\venv\Scripts\activate
+
+# Create Virtual Environment
+python -m venv .venv
+
+# Activate (Windows)
+.\.venv\Scripts\activate
+
+# Install Dependencies
+pip install -r requirements.txt
+
+# Run Server
 uvicorn main:app --reload
-# Runs on localhost:8000
+# Runs on http://localhost:8000
 ```
 
-### 3. Start Frontend (Web Client)
+### 4. Start Frontend (The Interface)
 ```bash
 cd web-client
+npm install
 npm run dev
-# Runs on localhost:5173
+# Runs on http://localhost:5173
 ```
 
-## 🧪 Key Features
-*   ✅ **Zero Data Leakage:** No audio leaves your machine.
-*   ✅ **High Performance:** Uses Pre-signed URLs for direct S3 uploads.
-*   ✅ **Cost Efficient:** Runs on standard CPUs (no GPU required).
+## 🧪 Usage Guide
+1.  Open **http://localhost:5173**.
+2.  Drag and drop an MP3/WAV file.
+3.  Watch the status change: `Uploading` → `AI Processing` → `Done`.
+4.  Copy the transcribed text.
+
+## 🛡️ Security Features
+*   **Pre-Signed URLs:** The backend generates a temporary, secure link for uploads. Large files never touch the Python server directly.
+*   **Offline Privacy:** No audio data is sent to OpenAI, Google, or AWS. Everything stays on your machine.
 
 ---
 *Engineered by Harshan Aiyappa.*
