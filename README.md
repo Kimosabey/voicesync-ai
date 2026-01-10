@@ -29,7 +29,7 @@
 ### Upload Interface
 
 <p align="center">
-  <img src="./docs/assets/upload.png" alt="VoiceSync Upload" width="800"/>
+  <img src="./docs/assets/architecture.png" alt="VoiceSync Architecture" width="800"/>
 </p>
 
 *Drag-and-drop audio upload with real-time processing status*
