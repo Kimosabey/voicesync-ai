@@ -150,12 +150,13 @@ No audio data is sent to external services. The Whisper AI model runs locally on
 
 ---
 
-## License
+## 👤 Author
 
-MIT License
+**Harshan Aiyappa**
+
+- GitHub: [@Kimosabey](https://github.com/Kimosabey)
 
 ---
 
-**Built by**: [Harshan Aiyappa](https://github.com/Kimosabey)  
 **Tech Stack**: React • Python • FastAPI • Whisper AI • MinIO  
 **Focus**: Privacy • Offline Processing • Secure Transcription
