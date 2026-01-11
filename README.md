@@ -24,78 +24,12 @@
 
 ---
 
-## Visual Overview
-
-### Upload Interface
-
-<p align="center">
-  <img src="./docs/assets/architecture.png" alt="VoiceSync Architecture" width="800"/>
-</p>
-
-*Drag-and-drop audio upload with real-time processing status*
-
-### Transcription Results
-
-<p align="center">
-  <img src="./docs/assets/result.png" alt="Transcription Results" width="750"/>
-</p>
-
-*Clean transcription output with metadata and download options*
-
----
-
-## Overview
-
-**VoiceSync AI** is a secure, offline audio transcription platform built with React, Python (FastAPI), MinIO, and OpenAI Whisper. Unlike typical AI apps that send data to the cloud, **VoiceSync runs entirely locally**.
-
-### Key Differentiator
-
-**100% Local Processing**: No audio data is sent to OpenAI, Google, or AWS. Everything stays on your machine.
-
-### Features
-
-- **Secure Upload**: Pre-signed URLs for direct client-to-storage upload (large files never touch the Python server)
-- **Offline Privacy**: Whisper AI model runs locally on your CPU
-- **Fast Processing**: Faster-Whisper optimization for CPU inference
-- **Modern UI**: React + Vite + Tailwind CSS with drag-and-drop interface
-- **S3-Compatible Storage**: MinIO for scalable object storage
-
----
-
-## Architecture
-
-```mermaid
-graph LR
-    User(User) -->|Drag & Drop| React[React Frontend]
-    React -->|1. Request URL| Py[Python API]
-    Py -->|2. Generate Pre-signed URL| MinIO[MinIO Storage]
-    React -->|3. Direct Upload| MinIO
-    React -->|4. Trigger AI| Py
-    Py -->|5. Download Audio| MinIO
-    Py -->|6. Run Whisper AI| Model[AI Model]
-    Py -->|7. Return Text| React
-```
-
----
-
-## Tech Stack
-
-- **Frontend**: React (Vite), TypeScript, Tailwind CSS, Axios
-- **Backend**: Python 3.11, FastAPI, Uvicorn
-- **AI Engine**: Faster-Whisper (OpenAI's model optimized for CPU)
-- **Storage**: MinIO (Docker) - S3 Compatible Object Storage
-- **Tools**: FFmpeg (Audio Processing)
-
----
-
-## Installation & Setup
+## 🚀 Quick Start
 
 ### 1. Prerequisites
 - Docker Desktop (Running)
-- Node.js v18+
-- Python 3.10+
-- **FFmpeg** (Required for Audio):
-  - *Windows:* `winget install Gyan.FFmpeg`
+- Node.js v18+ & Python 3.10+
+- **FFmpeg** (Required)
 
 ### 2. Start Infrastructure
 ```bash
@@ -106,17 +40,9 @@ docker-compose up -d
 ### 3. Start Backend
 ```bash
 cd ai-engine
-
-# Create Virtual Environment
 python -m venv .venv
-
-# Activate (Windows)
-.\.venv\Scripts\activate
-
-# Install Dependencies
+.\.venv\Scripts\activate   # or source .venv/bin/activate
 pip install -r requirements.txt
-
-# Run Server
 uvicorn main:app --reload
 # Runs on http://localhost:8000
 ```
@@ -131,7 +57,69 @@ npm run dev
 
 ---
 
-## Usage Guide
+## 📸 Screenshots
+
+### Upload Interface
+![VoiceSync Upload](docs/assets/upload.png)
+*Drag-and-drop audio upload with real-time processing status*
+
+### Transcription Results
+![Transcription Results](docs/assets/result.png)
+*Clean transcription output with metadata and download options*
+
+---
+
+## ✨ Key Features
+
+### 🔒 100% Offline Privacy
+- **Local Inference**: Whisper AI model runs entirely on your CPU.
+- **No Cloud Data**: Zero audio data is sent to OpenAI, Google, or AWS.
+
+### 🛡️ Secure Architecture
+- **Pre-signed URLs**: Direct client-to-storage upload prevents server bottlenecks.
+- **S3-Compatible**: Uses MinIO for scalable, standardized object storage.
+
+### ⚡ Optimized Performance
+- **Faster-Whisper**: Optimized implementation for faster CPU inference.
+- **Modern UI**: React + Vite + Tailwind CSS for a snappy experience.
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+graph LR
+    User(User) -->|Drag & Drop| React[React Frontend]
+    React -->|1. Request URL| Py[Python API]
+    Py -->|2. Generate Pre-signed URL| MinIO[MinIO Storage]
+    React -->|3. Direct Upload| MinIO
+    React -->|4. Trigger AI| Py
+    Py -->|5. Download Audio| MinIO
+    Py -->|6. Run Whisper AI| Model[AI Model]
+    Py -->|7. Return Text| React
+```
+
+### Data Flow
+1. **User** drops file → Frontend requests upload URL.
+2. **Backend** generates secure pre-signed URL.
+3. **Frontend** uploads **directly** to MinIO (bypassing backend upload limits).
+4. **Backend** downloads from MinIO, runs Whisper, returns text.
+
+---
+
+## 🔧 Tech Stack
+
+| Component | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Frontend** | React (Vite) | Modern SPA Dashboard |
+| **Backend** | Python FastAPI | Async API & Orchestration |
+| **AI Engine** | Faster-Whisper | Optimized CPU Inference |
+| **Storage** | MinIO (Docker) | S3-Compatible Object Store |
+| **Processing** | FFmpeg | Audio/Video handling |
+
+---
+
+## 🧪 Testing & Usage
 
 1. Open **http://localhost:5173**
 2. Drag and drop an MP3/WAV file
@@ -140,23 +128,19 @@ npm run dev
 
 ---
 
-## Security Features
+## 📝 License
 
-### Pre-Signed URLs
-The backend generates a temporary, secure link for uploads. Large files never touch the Python server directly - they go straight to MinIO storage.
-
-### Offline Privacy
-No audio data is sent to external services. The Whisper AI model runs locally on your machine, ensuring complete privacy.
+MIT License - See [LICENSE](./LICENSE) for details
 
 ---
 
 ## 👤 Author
 
-**Harshan Aiyappa**
-
-- GitHub: [@Kimosabey](https://github.com/Kimosabey)
+**Harshan Aiyappa**  
+Senior Full-Stack Engineer  
+📧 [GitHub](https://github.com/Kimosabey)
 
 ---
 
-**Tech Stack**: React • Python • FastAPI • Whisper AI • MinIO  
+**Built with**: React • Python • FastAPI • Whisper AI • MinIO  
 **Focus**: Privacy • Offline Processing • Secure Transcription
