@@ -1,4 +1,7 @@
 # VoiceSync AI
+
+![Thumbnail](docs/assets/thumbnail.png)
+
 ## Secure Offline Audio Transcription Platform
 
 <div align="center">
@@ -87,17 +90,7 @@ npm run dev
 
 ## 🏗️ Architecture
 
-```mermaid
-graph LR
-    User(User) -->|Drag & Drop| React[React Frontend]
-    React -->|1. Request URL| Py[Python API]
-    Py -->|2. Generate Pre-signed URL| MinIO[MinIO Storage]
-    React -->|3. Direct Upload| MinIO
-    React -->|4. Trigger AI| Py
-    Py -->|5. Download Audio| MinIO
-    Py -->|6. Run Whisper AI| Model[AI Model]
-    Py -->|7. Return Text| React
-```
+![Architecture](docs/assets/architecture.png)
 
 ### Data Flow
 1. **User** drops file → Frontend requests upload URL.
