@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  # MinIO (The S3 Storage)
+  minio:
+    image: minio/minio
+    container_name: voicesync_minio
+    ports:
+      - "9005:9000" # CHANGE THIS: Map Host 9005 to Container 9000
+      - "9001:9001" # Console Port stays the same
+    environment:
+      MINIO_ROOT_USER: "admin"
+      MINIO_ROOT_PASSWORD: "password123"
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+
+volumes:
+  minio_data:
